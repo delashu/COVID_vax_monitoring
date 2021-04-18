@@ -22,9 +22,9 @@ dg_df = pd.read_csv("https://raw.githubusercontent.com/delashu/COVID_vax_monitor
 columns = ['State', 'TotalPop', 'Men', 'Women', 'Hispanic', 'White', 'Black', 'Native', 'Asian', 'Pacific', 'VotingAge', 'Income', 'IncomePerCap']
 df1 = pd.DataFrame(dg_df, columns=columns)
 df2 = df1.groupby('State', as_index=False).agg({'TotalPop':'mean','Men':'mean','Women':'mean','Hispanic':'mean','White':'mean','Native':'mean','Asian':'mean','Pacific':'mean','VotingAge':'mean','Income':'mean','IncomePerCap':'mean'})
+df2.to_sql("statedemo", con, if_exists='replace', index=False)
 
 # check code
-#df2.to_sql("statedemo", con, if_exists='replace', index=False)
 #cur.execute("SELECT * FROM statedemo LIMIT 3;")
 #print(cur.fetchall())
 
