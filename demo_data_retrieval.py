@@ -1,21 +1,32 @@
+"""
+Demographic Data Retrieval 
+Data Source: Kaggle
+"""
 import datetime
 import sqlite3
 import pandas as pd
-#connect to a database in order to create tables
+
+# establish database connection
 con = sqlite3.connect('CovidVax.db')
 cur = con.cursor()
-#create try/except statement since we do not want to overwrite existing tables
+
+# don't overwrite existing table
 try:
     cmd = "DROP table statedemo"
     cur.execute(cmd)
 except:
     pass
-cmd = "CREATE TABLE statedemo (SUMLEV REAL,REGION REAL,DIVISION REAL,STATE REAL,NAME text,SEX REAL,ORIGIN REAL,RACE REAL,AGE REAL,CENSUS2010POP REAL,ESTIMATESBASE2010 REAL,POPESTIMATE2010 REAL,POPESTIMATE2011 REAL, POPESTIMATE2012 REAL,POPESTIMATE2013 REAL, POPESTIMATE2014 REAL,POPESTIMATE2015 REAL,POPESTIMATE2016 REAL,POPESTIMATE2017 REAL,POPESTIMATE2018 REAL,POPESTIMATE2019 REAL)"
 
-cur.execute(cmd)
-dg_df = pd.read_csv("https://www2.census.gov/programs-surveys/popest/tables/2010-2019/state/asrh/sc-est2019-alldata5.csv")
-dg_df.to_sql("statedemo", con, if_exists='replace', index=False)
+# read data on county level demographics from github and summarize by states
+dg_df = pd.read_csv("https://raw.githubusercontent.com/delashu/COVID_vax_monitoring/main/acs2017_county_data.csv")
+columns = ['State', 'TotalPop', 'Men', 'Women', 'Hispanic', 'White', 'Black', 'Native', 'Asian', 'Pacific', 'VotingAge', 'Income', 'IncomePerCap']
+df1 = pd.DataFrame(dg_df, columns=columns)
+df2 = df1.groupby('State', as_index=False).agg({'TotalPop':'mean','Men':'mean','Women':'mean','Hispanic':'mean','White':'mean','Native':'mean','Asian':'mean','Pacific':'mean','VotingAge':'mean','Income':'mean','IncomePerCap':'mean'})
+
+# check code
+#df2.to_sql("statedemo", con, if_exists='replace', index=False)
 #cur.execute("SELECT * FROM statedemo LIMIT 3;")
 #print(cur.fetchall())
+
 con.commit()
 con.close()
