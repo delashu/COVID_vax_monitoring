@@ -5,10 +5,36 @@ import matplotlib as mpl
 import matplotlib.pyplot as plt
 import numpy as np
 import math
+import plotly.express as px
+import json
 # connect to a database in order to create tables
 
 data = pd.read_csv('merged.csv')
 data[:-10]
+
+df = data.iloc[:,[1,2,10]]
+
+
+import plotly.graph_objects as go
+
+fig = go.Figure(data=go.Choropleth(
+    locations=["AL", "AK", "AZ", "AR", "CA", "CO", "CT", "DC", "DE", "FL", "GA", 
+          "HI", "ID", "IL", "IN", "IA", "KS", "KY", "LA", "ME", "MD", 
+          "MA", "MI", "MN", "MS", "MO", "MT", "NE", "NV", "NH", "NJ", 
+          "NM", "NY", "NC", "ND", "OH", "OK", "OR", "PA", "RI", "SC", 
+          "SD", "TN", "TX", "UT", "VT", "VA", "WA", "WV", "WI", "WY"], # Spatial coordinates
+    z = df['Doses_admin'], # Data to be color-coded
+    locationmode = 'USA-states', # set of locations match entries in `locations`
+    colorscale = 'tealgrn',
+    colorbar_title = "Doses Administered",
+))
+
+fig.update_layout(
+    title_text = 'Covid Vaccine Doses Administered By State',
+    geo_scope='usa', # limite map scope to USA
+)
+
+fig.show()
 
 con = sqlite3.connect('CovidVax.db')
 cur = con.cursor()
