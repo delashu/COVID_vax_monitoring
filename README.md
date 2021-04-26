@@ -11,25 +11,22 @@ Workflow will follow the basic steps:
  3. Perform desired analysis using provided functions  
 
 ### Installation and set-up  
-1. Download the python files, "*vaccine_data_retrival.py*","*demo_data_retrieval.py*", "*plots.py*", and "*var_analysis.py*", found in the github repository   
+1. Download the files, ["*vaccine_data_retrival.py*"](https://github.com/delashu/COVID_vax_monitoring/blob/main/vaccine_data_retreival.py), ["acs2017_county_data.csv"](https://github.com/delashu/COVID_vax_monitoring/blob/main/acs2017_county_data.csv),["*demo_data_retrieval.py*"](https://github.com/delashu/COVID_vax_monitoring/blob/main/demo_data_retrieval.py), ["*vaccine_monitoring.py*"](https://github.com/delashu/COVID_vax_monitoring/blob/main/vaccine_monitoring.py), and ["*var_analysis.py*"](https://github.com/delashu/COVID_vax_monitoring/blob/main/var_analysis.py), found in the github repository   
 2. Open a new python script where you will perform your analyses  
 3. Import functions into your environment based on desired analysis/capabilities.  
-
-```python
->> from var_analysis import open_state
->> from plots import simpleplots, vaccine_by_demographics
-```
-
-4. Create an object to house the analytic dataset. In the below example, we call this dataset, "mystate"
+4. Create an object to house the analytic dataset (a pandas dataframe) where each row is a state in which demographic and vaccine data is present. In the below example, we call this dataset, "mystate"
 ```python
 >> mystate = open_state()
 ```
 
 5. Run desired analysis. For example, if you wish to output the number of Stage One Vaccine doses for the state of North Carolina, run the following line:   
 ```python
+>> mystate = open_state()
 >> mystate["North Carolina"].Stage_One_Doses
 ```
 
+
+**Note that the full description and examples of functions and capabilities are found in the rest of this README.**  
 
 ## API description  
 Below is a guide for each function found in this github repository:  
@@ -37,12 +34,17 @@ Below is a guide for each function found in this github repository:
 ```python
 >> open_state()
 ```
-open_state() is a function that will merge state level vaccine data to state level demographic data. Under the hood, this function runs sqlite3 to merge the two tables from a sqlite3 database. The function outputs a dictionary in which the keys are state names.  
+open_state() is a function that will merge state level vaccine data to state level demographic data. Under the hood, this function runs sqlite3 to merge the vaccine table and the demographic table to create one pandas dataframe.  
   
 ```python
 >> mystate["North Carolina"].VARIABLE_OF_INTEREST
 ```
-Class objects are utilized to allow for the end user to easily explore vaccine and demographic information for each state. In the above code, the characters, "VARIABLE_OF_INTEREST" should be replaced by the exploratory variable of interest. Possible variables include:  
+Class objects are utilized to allow for the end user to easily explore vaccine and demographic information for each state. In the above code, the characters, "VARIABLE_OF_INTEREST" should be replaced by the exploratory variable of interest. For example, if the user wishes to examine the Doses Administered in Illnois, the user would run the following line:  
+```python
+>> mystate["Illinois"].Doses_admin
+```
+
+Other exploratory variables include:  
 - *Date* (when the vaccine data was updated)
 - *Lat* (state latitude)
 - *Long* (state longitude)
@@ -91,23 +93,43 @@ Consider the user wants to compare the Stage One Doses administered in North Car
 *Example Two:*   
 Consider the user wants to compare a demographic characteristic like the percentage of the state's population that is Hispanic and the number of doses that that state has administered. The user would first import the function, then run the comparison using the previously described inputs: 
 ```python
->> from plots import vaccine_by_demographics
+>> from vaccine_monitoring import vaccine_by_demographics
 >> vaccine_by_demographics("IncomePerCap")
 ```
 
 *Example Three:*   
 Consider the user wants to compare states with a below median income per capita and states with a above median per capita and the amount of vaccine doses administered. The user would first import the function, then run the comparison using the previously described inputs: 
 ```python
->> from plots import vaccine_by_demographics
+>> from vaccine_monitoring import vaccine_by_demographics
 >> vaccine_by_demographics("IncomePerCap")
 ```
 
 *Example Four:*   
 Create plot comparing two selected states based on selected demographic variable and Doses Administered. 
 ```python
->>from plots import comparisonplots
+>>from vaccine_monitoring import comparisonplots
 >>comparisonplots("Alaska", "North Carolina", "Income")
 ```
 *Example Five:* 
 Interactive choropleth map to show number of doses administered by state. 
 ![alt text](https://github.com/delashu/COVID_vax_monitoring/blob/main/Vaccinedosesadministeredbystate.png)
+
+
+
+## Contributor Instructions: 
+A separate directory in the github repository called, ["tests"](https://github.com/delashu/COVID_vax_monitoring/tree/main/tests) houses python test files for the various python files found in the repository. We encourage contributors to add to these tests and create their own test files. Below we highlight tests found in our repository. The first is found in ["test_vaccine_monitoring.py"](https://github.com/delashu/COVID_vax_monitoring/blob/main/tests/test_vaccine_monitoring.py)   
+
+```python
+>> from plots import simpleplots, vaccine_by_demographics, comparisonplots
+>> from unittest.mock import patch
+>> def test_simpleplots():
+    """test simpleplots."""
+    with patch("plots.plt.savefig") as show_patch:
+        simpleplots("IncomePerCap")
+        assert show_patch.called
+```
+
+After all tests have been written, run the below in the commandline and ensure all tests pass/clear.   
+```console
+$ pytest
+```
