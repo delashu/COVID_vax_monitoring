@@ -39,7 +39,7 @@ open_state() is a function that will merge state level vaccine data to state lev
 ```python
 >> mystate["North Carolina"].VARIABLE_OF_INTEREST
 ```
-Class objects are utilized to allow for the end user to easily explore vaccine and demographic information for each state. In the above code, the characters, "VARIABLE_OF_INTEREST" should be replaced by the exploratory variable of interest. For example, if the user wishes to examine the Doses Administered in Illnois, the user would run the following line:  
+Class objects are utilized to allow for the end user to easily explore vaccine and demographic information for each state. In the above code, the characters, "VARIABLE_OF_INTEREST" should be replaced by the exploratory variable of interest. For example, if the user wishes to examine the Doses Administered in Illinois, the user would run the following line:  
 ```python
 >> mystate["Illinois"].Doses_admin
 ```
