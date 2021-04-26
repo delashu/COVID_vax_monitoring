@@ -117,6 +117,15 @@ Interactive choropleth map to show number of doses administered by state.
 
 
 ## Contributor Instructions: 
+### Contributor Workflow Overview:  
+The general flow of data to analysis goes as follows:  
+1. Run ["*vaccine_data_retrival.py*"](https://github.com/delashu/COVID_vax_monitoring/blob/main/vaccine_data_retreival.py). This file pulls the most recent state-level vaccine data. We download the data and place it into a SQLite3 table.  
+2. Run ["*demo_data_retrieval.py*"](https://github.com/delashu/COVID_vax_monitoring/blob/main/demo_data_retrieval.py). This file places a pre-downloaded state-level demogaphics csv data file, and places it into a SQLite3 table.  
+3. Run ["*var_analysis.py*"](https://github.com/delashu/COVID_vax_monitoring/blob/main/var_analysis.py). This file will run ["*vaccine_data_retrival.py*"](https://github.com/delashu/COVID_vax_monitoring/blob/main/vaccine_data_retreival.py) and ["*demo_data_retrieval.py*"](https://github.com/delashu/COVID_vax_monitoring/blob/main/demo_data_retrieval.py) via import statements, and then joins the table via a SQL query into a pandas dataframe. The data in the pandas dataframe are then placed into a Class object, called **State**. The user can now navigate various characteristics about each state.  
+4. Run ["*vaccine_monitoring.py*"](https://github.com/delashu/COVID_vax_monitoring/blob/main/vaccine_monitoring.py). This python file imports all the previous files from steps (1) - (3) and thus provides the user a joined analytic dataset. The user can now explore state level data via class objects, plot vaccine doses, visualize vaccine doses via a map, and run analyses such as ANOVA.   
+
+
+### Tests  
 A separate directory in the github repository called, ["tests"](https://github.com/delashu/COVID_vax_monitoring/tree/main/tests) houses python test files for the various python files found in the repository. We encourage contributors to add to these tests and create their own test files. Below we highlight tests found in our repository. The first is found in ["test_vaccine_monitoring.py"](https://github.com/delashu/COVID_vax_monitoring/blob/main/tests/test_vaccine_monitoring.py)   
 
 ```python
