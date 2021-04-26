@@ -14,9 +14,12 @@ import plotly.graph_objects as go
 import seaborn as sns
 from sklearn.linear_model import LinearRegression
 import sqlite3
+import var_analysis
+from var_analysis import state_to_df
 
 # read and format data for plots
-data = pd.read_csv('merged.csv')
+data = state_to_df()
+#data = pd.read_csv('merged.csv')
 data[:-10]
 df = data.iloc[:,[1,2,10]]
 

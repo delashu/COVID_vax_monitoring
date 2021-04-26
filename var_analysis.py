@@ -6,6 +6,10 @@ import matplotlib.pyplot as plt
 import datetime
 import sqlite3
 import pandas as pd
+import os
+import vaccine_data_retreival
+import demo_data_retrieval
+
 con = sqlite3.connect('CovidVax.db')
 cur = con.cursor()
 class State():
@@ -63,6 +67,18 @@ class State():
         return False
         raise ValueError("Comparison is not supported")
 
+def state_to_df(your_db="CovidVax.db"): 
+    con = sqlite3.connect(your_db)
+    cur = con.cursor()
+    #perform a FULL JOIN on the two tables
+    cmd = """
+    SELECT * FROM statevax
+    LEFT JOIN statedemo ON statevax.Province_State = statedemo.State
+    WHERE statevax.Vaccine_Type = "All";
+    """
+    merged_df_dat = pd.read_sql_query(cmd, con)
+    return merged_df_dat
+
 def open_state(your_db="CovidVax.db"): 
     con = sqlite3.connect(your_db)
     cur = con.cursor()
@@ -100,9 +116,9 @@ def open_state(your_db="CovidVax.db"):
         IncomePerCap = us_state[24])
     return state_dict
 
-# if __name__ == "__main__":
-#     mystate = open_state()
-#     print(mystate["North Carolina"].Stage_One_Doses)
+if __name__ == "__main__":
+    mystate = open_state()
+    print(mystate["North Carolina"].Stage_One_Doses)
 #     print(mystate["South Carolina"].Stage_One_Doses)
 #     print(mystate["North Carolina"].Stage_Two_Doses)
 #     print(mystate["South Carolina"].Stage_Two_Doses)
