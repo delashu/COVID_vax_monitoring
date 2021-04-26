@@ -103,7 +103,8 @@ Consider the user wants to compare states with a below median income per capita 
 ```
 
 *Example Four:*   
+Create plot comparing two selected states based on selected demographic variable and Doses Administered. 
 ```python
->>
->>
+>>from plots import comparisonplots
+>>comparisonplots("Alaska", "North Carolina", "Income")
 ```
