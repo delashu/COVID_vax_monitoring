@@ -17,6 +17,7 @@ Workflow will follow the basic steps:
 
 ```python
 >> from var_analysis import open_state
+>> from plots import simpleplots, vaccine_by_demographics
 ```
 
 4. Create an object to house the analytic dataset. In the below example, we call this dataset, "mystate"
@@ -63,12 +64,19 @@ Class objects are utilized to allow for the end user to easily explore vaccine a
 
 
 ```python
->> function()
+>> simpleplots("demographic")
 ```
-Description here  
+A scatter plot of vaccine doses administered v. the demographic characteristic for each of the 50 states along with the regression line and corresponding R^2 statistic is saved into the working directory. SQL queries are utilized for efficient retrieval of the data. Demographic should be replaced with a demographic variable of interest: *TotalPop*, *Income*, *IncomePerCap*, *Hispanic*, *White*, *Native*, *Asian*, *Pacific*, *Men*, *Women*
+
 ```python
->> function()
+>> vaccine_by_demographics("variable")
 ```
+This function prints an ANOVA analysis summary comparing high and low catergories (based on median) of *variable* and vaccine doses administered. A boxplot comparing the variables is saved as a png file into the working directory to better visualize the spread of the data and ANOVA results. Variable should be replaced with a demographic variable of interest: *TotalPop*, *Income*, *IncomePerCap*, *Hispanic*, *White*, *Native*, *Asian*, *Pacific*, *Men*, *Women*
+
+```python
+>> 
+```
+Description here
 
 ### Example Use Cases   
 *Example One:*  
@@ -80,9 +88,22 @@ Consider the user wants to compare the Stage One Doses administered in North Car
 >> mystate["North Carolina"].Stage_One_Doses > mystate["South Carolina"].Stage_Two_Doses
 ```
 
-
 *Example Two:*   
-
+Consider the user wants to compare a demographic characteristic like the percentage of the state's population that is Hispanic and the number of doses that that state has administered. The user would first import the function, then run the comparison using the previously described inputs: 
 ```python
->> 
+>> from plots import vaccine_by_demographics
+>> vaccine_by_demographics("IncomePerCap")
+```
+
+*Example Three:*   
+Consider the user wants to compare states with a below median income per capita and states with a above median per capita and the amount of vaccine doses administered. The user would first import the function, then run the comparison using the previously described inputs: 
+```python
+>> from plots import vaccine_by_demographics
+>> vaccine_by_demographics("IncomePerCap")
+```
+
+*Example Four:*   
+```python
+>>
+>>
 ```
