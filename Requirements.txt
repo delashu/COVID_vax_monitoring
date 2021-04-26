@@ -6,3 +6,4 @@ plotly==4.14.3
 pytest==6.2.2
 seaborn==0.11.1
 sklearn==0.0
+Sqlites3 = 3.28.0
