@@ -2,6 +2,8 @@
 Analyzing and Visualizing Demographic and Vaccine Data
 """
 from bioinfokit.analys import stat
+import datetime
+import json
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 import math
@@ -18,7 +20,7 @@ data = pd.read_csv('merged.csv')
 data[:-10]
 df = data.iloc[:,[1,2,10]]
 
-# Interactive map of vaccine does across states
+# interactive map of vaccine does across states
 fig = go.Figure(data=go.Choropleth(
     locations=["AL", "AK", "AZ", "AR", "CA", "CO", "CT", "DC", "DE", "FL", "GA", 
           "HI", "ID", "IL", "IN", "IA", "KS", "KY", "LA", "ME", "MD", 
@@ -52,13 +54,12 @@ data.to_sql("vaccinedat", con, if_exists='replace', index=False)
 
 def simpleplots(demographic):
     """Create plots, regression models, and compute r^2 values of vaccine doses v. continuous demographic variables"""
-    
-    # Retreiving data for plots
+    # retrieve data for plots
     cur.execute(
         "SELECT "+demographic+", Doses_admin FROM vaccinedat")
     dataset = cur.fetchall()
 
-    # Retreiving and shaping data for regression line
+    # retrieve and shape data for regression line
     cmd = "SELECT "+demographic+", Doses_admin FROM vaccinedat"
     stat_df = pd.read_sql_query(cmd, con)
     stat_df = stat_df.drop([51,52,53,54,55,56,57,58,59,60]) #dropping missing data of US territories
@@ -67,7 +68,7 @@ def simpleplots(demographic):
     y = stat_df.iloc[:, 1].values
     reg = LinearRegression().fit(X, y)
 
-    # Creating plots
+    # create plots
     plt.scatter(*zip(*dataset))
     plt.plot(X, reg.predict(X), color='blue', linewidth=3)
     plt.xlabel(demographic)
@@ -76,33 +77,22 @@ def simpleplots(demographic):
     plt.savefig('DosesVsDemographic.png')
 
 
-def vaccine_by_income(variable):
-    """Analyze vaccine doses by demographics of states using ANOVA"""
-    if variable not in ("IncomePerCap", "Hispanic", "Women"):
-        raise Exception("Variable must be IncomePerCap, Hispanic, or Women") 
-    res = stat()
-    if variable == "IncomePerCap":
-        data['category'] = pd.cut(data['IncomePerCap'], bins=[0, data['IncomePerCap'].median(), float('Inf')], labels=['High', 'Low'])
-        ax = sns.boxplot(x="category", y="Doses_admin", data=data, color='#99c2a2')
-        res.anova_stat(df=data, res_var='Doses_admin', anova_model='Doses_admin ~ C(category)')
-        print(res.anova_summary)
-        plt.xlabel("Income per Capita of States")
-        plt.title("Does Administered by " + str(variable) + "  ANOVA p-val>0.10")
-    elif variable == "Hispanic":
-        data['category'] = pd.cut(data['Hispanic'], bins=[0, data['Hispanic'].median(), float('Inf')], labels=['High', 'Low'])
-        ax = sns.boxplot(x="category", y="Doses_admin", data=data, color='#99c2a2')
-        res.anova_stat(df=data, res_var='Doses_admin', anova_model='Doses_admin ~ C(category)')
-        print(res.anova_summary)
-        plt.xlabel("Hispanic Populaton of States")
-        plt.title("Does Administered by " + str(variable) + "  ANOVA p-val>0.10")
-    else:
-        data['gender_cat'] = pd.cut(data['Women'], bins=[0, data['Women'].median(), float('Inf')], labels=['High', 'Low'])
-        ax = sns.boxplot(x="gender_cat", y="Doses_admin", data=data, color='#99c2a2')
-        res.anova_stat(df=data, res_var='Doses_admin', anova_model='Doses_admin ~ C(gender_cat)')
-        print(res.anova_summary)
-        plt.xlabel("Population of Women in States")
-        plt.title("Does Administered by " + str(variable) + "  ANOVA p-val<0.01")
+def vaccine_by_demographics(variable):
+    """Analyze vaccine doses by demographics of states using boxplots and ANOVA"""
+    if variable not in ("TotalPop", "Income", "IncomePerCap", "Hispanic", "White", "Native", "Asian", "Pacific", "Men", "Women"):
+        raise Exception("Variable must be a demographic characteristic: TotalPop, Income, IncomePerCap, Hispanic, White, Native, Asian, Pacific, Men, Women") 
     
+    # boxplot
+    data['category'] = pd.cut(data[variable], bins=[0, data[variable].median(), float('Inf')], labels=['High', 'Low'])
+    ax = sns.boxplot(x="category", y="Doses_admin", data=data, color='#99c2a2')
+    # ANOVA model
+    res = stat()
+    res.anova_stat(df=data, res_var='Doses_admin', anova_model='Doses_admin ~ C(category)')
+    # output analysis and plot
+    print(res.anova_summary)
+    print("If the pvalue is > 0.10, there is no difference in the high and low groups (at a confidence level of 0.10)")
+    plt.title("Does Administered by " + str(variable))
+    plt.xlabel(variable)
     plt.ylabel("Doses Administered")
     plt.savefig('boxplot.png')
 
@@ -114,7 +104,6 @@ def comparisonplots(state1, state2, demographic):
     datasetplot1 = cur.fetchall()
     cur.execute(
         "SELECT "+demographic+", Doses_admin FROM vaccinedat WHERE Province_State ='"+state2+"'")
-
     # datasetplot2
     datasetplot2 = cur.fetchall()
     income1 = datasetplot1[0][0]
@@ -142,5 +131,5 @@ def comparisonplots(state1, state2, demographic):
 
 if __name__ == '__main__':
     simpleplots("Income")
-    vaccine_by_income("Hispanic")
+    vaccine_by_demographics("IncomePerCap")
     comparisonplots("Alaska", "North Carolina", "Income")
