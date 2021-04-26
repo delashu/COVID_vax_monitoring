@@ -108,3 +108,6 @@ Create plot comparing two selected states based on selected demographic variable
 >>from plots import comparisonplots
 >>comparisonplots("Alaska", "North Carolina", "Income")
 ```
+*Example Five:* 
+Interactive choropleth map to show number of doses administered by state. 
+![alt text](https://github.com/delashu/COVID_vax_monitoring/blob/main/Vaccinedosesadministeredbystate.png)
