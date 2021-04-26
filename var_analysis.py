@@ -116,9 +116,9 @@ def open_state(your_db="CovidVax.db"):
         IncomePerCap = us_state[24])
     return state_dict
 
-if __name__ == "__main__":
-    mystate = open_state()
-    print(mystate["North Carolina"].Stage_One_Doses)
+# if __name__ == "__main__":
+#     mystate = open_state()
+#     print(mystate["North Carolina"].Stage_One_Doses)
 #     print(mystate["South Carolina"].Stage_One_Doses)
 #     print(mystate["North Carolina"].Stage_Two_Doses)
 #     print(mystate["South Carolina"].Stage_Two_Doses)

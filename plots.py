@@ -1,7 +1,7 @@
 """
 Analyzing and Visualizing Demographic and Vaccine Data
 """
-#from bioinfokit.analys import stat
+from bioinfokit.analys import stat
 import datetime
 import json
 import matplotlib as mpl
@@ -9,20 +9,18 @@ import matplotlib.pyplot as plt
 import math
 import numpy as np
 import pandas as pd
-#import plotly.express as px
-#import plotly.graph_objects as go
-#import seaborn as sns
-#from sklearn.linear_model import LinearRegression
+import plotly.express as px
+import plotly.graph_objects as go
+import seaborn as sns
+from sklearn.linear_model import LinearRegression
 import sqlite3
-import var_analysis
-from var_analysis import state_to_df
+from var_analysis import state_to_df, open_state
 
 # read and format data for plots
 data = state_to_df()
 #data = pd.read_csv('merged.csv')
 data[:-10]
 df = data.iloc[:,[0,1,9]]
-breakpoint()
 
 # interactive map of vaccine does across states
 fig = go.Figure(data=go.Choropleth(
@@ -137,3 +135,5 @@ if __name__ == '__main__':
     simpleplots("Income")
     vaccine_by_demographics("IncomePerCap")
     comparisonplots("Alaska", "North Carolina", "Income")
+    mystate = open_state()
+    print(mystate["North Carolina"].Stage_One_Doses)
