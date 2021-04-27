@@ -1,6 +1,13 @@
 """
 Analyzing and Visualizing Demographic and Vaccine Data
+
+Four separate figures are created with additional analyses performed on the plots
+
+Figures created include: interactive chloropeth map, scatter plot, boxplot, and bar plot
+Analyses performed include: linear regression, R^2, and one-way ANOVA 
+
 """
+
 from bioinfokit.analys import stat
 import datetime
 import json
@@ -18,12 +25,28 @@ from var_analysis import state_to_df, open_state
 
 # read and format data for plots
 data = state_to_df()
-#data = pd.read_csv('merged.csv')
 data[:-10]
 df = data.iloc[:,[0,1,9]]
 
-# interactive map of vaccine does across states
+# establish database connection
+con = sqlite3.connect('CovidVax.db')
+cur = con.cursor()
+
+# create try/except statement since we do not want to overwrite existing tables
+try:
+    cmd = "DROP table vaccinedat"
+    cur.execute(cmd)
+except:
+    pass
+cur.execute('CREATE TABLE vaccinedat (FIPS,Province_State,Country_Region,Date,Lat,Long_,Vaccine_Type,Doses_alloc,Doses_shipped,Doses_admin,Stage_One_Doses,Stage_Two_Doses,Combined_Key,State,TotalPop,Men,Women,Hispanic,White,Native,Asian,Pacific,VotingAge,Income,IncomePerCap)')
+con.commit()
+data.to_sql("vaccinedat", con, if_exists='replace', index=False)
+
 def interactiveplot():
+    """ 
+    BEHAVIOR: creates interactive map of vaccine doses across states, 
+    OUTPUT: map is plotted in separate window.
+    """
     fig = go.Figure(data=go.Choropleth(
         locations=["AL", "AK", "AZ", "AR", "CA", "CO", "CT", "DC", "DE", "FL", "GA", 
               "HI", "ID", "IL", "IN", "IA", "KS", "KY", "LA", "ME", "MD", 
@@ -41,23 +64,15 @@ def interactiveplot():
     )
     fig.show()
 
-# establish database connection
-con = sqlite3.connect('CovidVax.db')
-cur = con.cursor()
-# create try/except statement since we do not want to overwrite existing tables
-try:
-    cmd = "DROP table vaccinedat"
-    cur.execute(cmd)
-except:
-    pass
-cur.execute('CREATE TABLE vaccinedat (FIPS,Province_State,Country_Region,Date,Lat,Long_,Vaccine_Type,Doses_alloc,Doses_shipped,Doses_admin,Stage_One_Doses,Stage_Two_Doses,Combined_Key,State,TotalPop,Men,Women,Hispanic,White,Native,Asian,Pacific,VotingAge,Income,IncomePerCap)')
-con.commit()
-data.to_sql("vaccinedat", con, if_exists='replace', index=False)
-
-
 def simpleplots(demographic):
-    """Create plots, regression models, and compute r^2 values of vaccine doses v. continuous demographic variables"""
-    # retrieve data for plots
+    """
+    INPUT: demographic variable
+    BEHAVIOR: create scatter plot of vaccine doses v. continuous demographic variable,
+                plot points for each of the 50 US states,
+                compute and plot regression line and R^2 value,
+    OUTPUT: figure saved into working directory
+    """
+    # retrieve data for plots using SQL
     cur.execute(
         "SELECT "+demographic+", Doses_admin FROM vaccinedat")
     dataset = cur.fetchall()
@@ -71,7 +86,7 @@ def simpleplots(demographic):
     y = stat_df.iloc[:, 1].values
     reg = LinearRegression().fit(X, y)
 
-    # create plots
+    # create plot and save into directory 
     plt.scatter(*zip(*dataset))
     plt.plot(X, reg.predict(X), color='blue', linewidth=3)
     plt.xlabel(demographic)
@@ -81,7 +96,14 @@ def simpleplots(demographic):
 
 
 def vaccine_by_demographics(variable):
-    """Analyze vaccine doses by demographics of states using boxplots and ANOVA"""
+    """
+    INPUT: demographic variable
+    BEHAVIOR: analyze vaccine doses by demographics dichotomized into low (below median) and high groups,
+                plot boxplots showing spread of vaccine doses administered
+                perform ANOVA analysis 
+    OUTPUT: ANOVA summary printed to terminal
+                plot saved into working directory
+    """
     if variable not in ("TotalPop", "Income", "IncomePerCap", "Hispanic", "White", "Native", "Asian", "Pacific", "Men", "Women"):
         raise Exception("Variable must be a demographic characteristic: TotalPop, Income, IncomePerCap, Hispanic, White, Native, Asian, Pacific, Men, Women") 
     
@@ -91,6 +113,7 @@ def vaccine_by_demographics(variable):
     # ANOVA model
     res = stat()
     res.anova_stat(df=data, res_var='Doses_admin', anova_model='Doses_admin ~ C(category)')
+    
     # output analysis and plot
     print(res.anova_summary)
     print("If the pvalue is > 0.10, there is no difference in the high and low groups (at a confidence level of 0.10)")
@@ -101,13 +124,19 @@ def vaccine_by_demographics(variable):
 
 
 def comparisonplots(state1, state2, demographic):
-    """Comparing doses administered and demographic variables across states"""
+    """
+    INPUTS: US state, US state, demographic variable
+    BEHAVIOR: perform pairwise comparisons of doses administered and demographic variables,
+                plot bar plots
+    OUTPUT: figure saved into working directory
+    """
     cur.execute(
         "SELECT "+demographic+", Doses_admin FROM vaccinedat WHERE Province_State = '"+state1+"'")
     datasetplot1 = cur.fetchall()
     cur.execute(
         "SELECT "+demographic+", Doses_admin FROM vaccinedat WHERE Province_State ='"+state2+"'")
-    # datasetplot2
+    
+    # assign data values for each set of bar plots 
     datasetplot2 = cur.fetchall()
     income1 = datasetplot1[0][0]
     doses1 = datasetplot1[0][1]
@@ -119,9 +148,11 @@ def comparisonplots(state1, state2, demographic):
     width = 0.35
 
     States = [state1, state2]
+    # log transformation to visualize variables on same plot
     Income = [math.log(income1), math.log(income2)]
     Doses = [math.log(doses1), math.log(doses2)]
 
+    # create plot
     fig, ax = plt.subplots()
     rects1 = ax.bar(ind, Doses, width, color='r')
     rects2 = ax.bar(ind + width, Income, width, color='y')
