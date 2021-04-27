@@ -1,8 +1,12 @@
 """
 Demographic Data Retrieval 
-Data Source: Kaggle
+Census-level demographics are read from csv file (link below) that was uploaded to Github repository.
+Data is aggregated by state and inserted into the CovidVax SQl database.
+
+Data Source: 
+US Census via Kaggle
+https://www.kaggle.com/muonneutrino/us-census-demographic-data?select=acs2017_county_data.csv)
 """
-import datetime
 import sqlite3
 import pandas as pd
 
@@ -10,7 +14,7 @@ import pandas as pd
 con = sqlite3.connect('CovidVax.db')
 cur = con.cursor()
 
-# don't overwrite existing table
+# #create try/except statement since we do not want to overwrite existing tables
 try:
     cmd = "DROP table statedemo"
     cur.execute(cmd)
@@ -24,5 +28,6 @@ df1 = pd.DataFrame(dg_df, columns=columns)
 df2 = df1.groupby('State', as_index=False).agg({'TotalPop':'mean','Men':'mean','Women':'mean','Hispanic':'mean','White':'mean','Native':'mean','Asian':'mean','Pacific':'mean','VotingAge':'mean','Income':'mean','IncomePerCap':'mean'})
 df2.to_sql("statedemo", con, if_exists='replace', index=False)
 
+# close SQL connection
 con.commit()
 con.close()
