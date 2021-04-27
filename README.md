@@ -64,7 +64,6 @@ Other exploratory variables include:
 - *Income* (Mean income)
 - *IncomePerCap* (Mean ncome per capita) 
 
-
 ```python
 >> simpleplots("demographic")
 ```
@@ -76,7 +75,12 @@ A scatter plot of vaccine doses administered v. the demographic characteristic f
 This function prints an ANOVA analysis summary comparing high and low catergories (based on median) of *variable* and vaccine doses administered. A boxplot comparing the variables is saved as a png file into the working directory to better visualize the spread of the data and ANOVA results. Variable should be replaced with a demographic variable of interest: *TotalPop*, *Income*, *IncomePerCap*, *Hispanic*, *White*, *Native*, *Asian*, *Pacific*, *Men*, *Women*
 
 ```python
->> 
+>> comparisonplots(state1, state2, demographic)
+```
+To perform pairwise comparisons of states, a bar plot with logarithmic scales of vaccine doses administered and a selected demographic variable of two specified states is saved into the working directory. State1 and State2 should be replaced with a name of one of the 50 US states and demographic should be replaced with a demographic variable of interest: *TotalPop*, *Income*, *IncomePerCap*, *Hispanic*, *White*, *Native*, *Asian*, *Pacific*, *Men*, *Women*
+
+```python
+>> interactiveplot()
 ```
 Description here
 
@@ -93,8 +97,8 @@ Consider the user wants to compare the Stage One Doses administered in North Car
 *Example Two:*   
 Consider the user wants to compare a demographic characteristic like the percentage of the state's population that is Hispanic and the number of doses that that state has administered. The user would first import the function, then run the comparison using the previously described inputs: 
 ```python
->> from vaccine_monitoring import vaccine_by_demographics
->> vaccine_by_demographics("IncomePerCap")
+>> from vaccine_monitoring import simpleplots
+>> simpleplots("Hispanic")
 ```
 
 *Example Three:*   
@@ -107,14 +111,17 @@ Consider the user wants to compare states with a below median income per capita 
 *Example Four:*   
 Create plot comparing two selected states based on selected demographic variable and Doses Administered. 
 ```python
->>from vaccine_monitoring import comparisonplots
->>comparisonplots("Alaska", "North Carolina", "Income")
+>> from vaccine_monitoring import comparisonplots
+>> comparisonplots("Alaska", "North Carolina", "Income")
 ```
+
 *Example Five:* 
 Interactive choropleth map to show number of doses administered by state. 
 ![alt text](https://github.com/delashu/COVID_vax_monitoring/blob/main/Vaccinedosesadministeredbystate.png)
-
-
+```python
+>> 
+>>
+```
 
 ## Contributor Instructions: 
 ### Contributor Workflow Overview:  
