@@ -1,5 +1,9 @@
 """
-Create python code that will visualize continuous variables against vaccine rates per state.
+'var_analysis.py' imports 'vaccine_data_retreival.py' and 'demo_data_retrieval.py'
+    'vaccine_data_retreival.py' pulls vaccine data. 
+    'demo_data_retrieval.py' pulls demographic data. 
+This script will then join the two tables craeted in 'vaccine_data_retreival.py' and 'demo_data_retrieval.py'
+The joined table will then be placed in a dictionary and then a Class Object titled, "State()"
 """
 import numpy as np
 import matplotlib.pyplot as plt
@@ -13,6 +17,10 @@ import demo_data_retrieval
 con = sqlite3.connect('CovidVax.db')
 cur = con.cursor()
 class State():
+    """
+    Create a class object called state using the __init__() function
+    Assign various state level characteristic values to the State object property
+    """
     def __init__(self, state, Date, Lat, Long, Vaccine_Type, Doses_alloc, Doses_shipped,Doses_admin,Stage_One_Doses,Stage_Two_Doses,TotalPop,Men,Women,Hispanic,White,Native,Asian,Pacific,VotingAge,Income,IncomePerCap):
         self.state = state
         self.Date = Date
@@ -36,38 +44,38 @@ class State():
         self.Income = Income 
         self.IncomePerCap = IncomePerCap
     #add a decorator
-    # @property
-    # def percentage_vaccinated(self):
-    #     pct = float(self.Doses_admin)/float(self.TotalPop) 
-    #     return pct
-    #greater than comparison operator
-    def __gt__(self, other): 
-        if ininstance(other, State):
-            if self.percentage > other.percentage:
-                return True
-        elif ininstance(other, int):
-            if self.percentage > other:
-                return True
-        elif ininstance(other, float):
-            if self.percentage > other:
-                return True
-        return False
-        raise ValueError("Comparison is not supported")
-    #less than comparison operator
-    def __lt__(self, other): 
-        if ininstance(other, State):
-            if self.percentage < other.percentage:
-                return True
-        elif ininstance(other, int):
-            if self.percentage < other.percentage:
-                return True
-        elif ininstance(other, float):
-            if self.percentage < other.percentage:
-                return True
-        return False
-        raise ValueError("Comparison is not supported")
+    @property
+    def percentage_stage_one(self):
+        """
+        INPUT: 
+        BEHAVIOR:
+        OUTPUT: 
+        Utilizing the class object, we calculate the percentage of the population 
+        that has obtained a stage one dose (# of Stage One Doses / Total Population)
+        """
+        pct_stg_one = float(self.Stage_One_Doses)/float(self.TotalPop) 
+        return pct_stg_one
+    @property
+    def percentage_stage_two(self):
+        """
+        INPUT: 
+        BEHAVIOR:
+        OUTPUT: 
+        Utilizing the class object, we calculate the percentage of the population 
+        that has obtained a stage two dose (# of Stage Two Doses / Total Population)
+        """
+        pct_stg_two = float(self.Stage_Two_Doses)/float(self.TotalPop) 
+        return pct_stg_two
 
 def state_to_df(your_db="CovidVax.db"): 
+    """
+    INPUT: database name (default: "CovidVax.db")
+    BEHAVIOR: connect to the databse, 
+                perform a left join on the two tables
+                where each row is a state.
+                place the output of the join into a pandas dataframe
+    OUTPUT: pandas dataframe where each row is a state
+    """
     con = sqlite3.connect(your_db)
     cur = con.cursor()
     #perform a FULL JOIN on the two tables
@@ -80,9 +88,20 @@ def state_to_df(your_db="CovidVax.db"):
     return merged_df_dat
 
 def open_state(your_db="CovidVax.db"): 
+    """
+    INPUT: database name (default: "CovidVax.db")
+    BEHAVIOR: connect to the databse, 
+                perform a left join on the two tables
+                where each row is a state.
+                place the output of the join into a pandas dataframe
+                the pandas dataframe is then output into a list. 
+                We iterate through the list and place into a dictionary and class object "State"
+    OUTPUT: dictionary, titled, "state_dict" where index is state name
+            This dictionary is also placed into a class object, "State"
+    """
     con = sqlite3.connect(your_db)
     cur = con.cursor()
-    #perform a FULL JOIN on the two tables
+    #perform a LEFT JOIN on the two tables
     cmd = """
     SELECT * FROM statevax
     LEFT JOIN statedemo ON statevax.Province_State = statedemo.State
@@ -118,8 +137,21 @@ def open_state(your_db="CovidVax.db"):
 
 # if __name__ == "__main__":
 #     mystate = open_state()
-#     print(mystate["North Carolina"].Stage_One_Doses)
-#     print(mystate["South Carolina"].Stage_One_Doses)
-#     print(mystate["North Carolina"].Stage_Two_Doses)
-#     print(mystate["South Carolina"].Stage_Two_Doses)
-#     print(mystate["North Carolina"].Stage_Two_Doses > mystate["South Carolina"].Stage_Two_Doses)
+#     #print(len(mystate))
+#     #print(mystate["Nebraska"].Men)
+#     NC = mystate["North Carolina"]
+#     SC = mystate["South Carolina"]
+
+#     stg_one=SC.Stage_One_Doses
+#     totpop=SC.TotalPop
+#     my_div = stg_one/totpop
+#     print(my_div)
+#     print(SC.percentage_stage_one)
+#     print(my_div == SC.percentage_stage_one)
+
+
+#     print(NC.TotalPop)
+#     print(SC.TotalPop) 
+#     print(NC.percentage_stage_one)
+#     print(SC.percentage_stage_one)
+#     print(NC.percentage_stage_one > SC.percentage_stage_one)
