@@ -94,28 +94,42 @@ Consider the user wants to compare the Stage One Doses administered in North Car
 >> mystate["North Carolina"].Stage_One_Doses > mystate["South Carolina"].Stage_Two_Doses
 ```
 
-*Example Two:*   
+*Example Two:*  
+Similarly, we can consider the user wants to compare the percentage of the total North Carolina population that has recieved a first dose of the vaccine to the percentage of the total Minnesota population that has recieved a first dose of the vaccine. The user can alternatively place the class into python objects and print a comparison statement to discover which state has more percentage of dose one vaccine administered:  
+
+```python
+>> from var_analysis import open_state
+>> mystate = open_state()
+>> my_MN_stgone = mystate["Minnesota"].percentage_stage_one
+>> my_NC_stgone = mystate["North Carolina"].percentage_stage_one
+>> print(my_MN_stgone > my_NC_stgone)
+
+```
+
+
+
+*Example Three:*   
 Consider the user wants to compare a demographic characteristic like the percentage of the state's population that is Hispanic and the number of doses that that state has administered. The user would first import the function, then run the comparison using the previously described inputs: 
 ```python
 >> from vaccine_monitoring import simpleplots
 >> simpleplots("Hispanic")
 ```
 
-*Example Three:*   
+*Example Four:*   
 Consider the user wants to compare states with a below median income per capita and states with a above median per capita and the amount of vaccine doses administered. The user would first import the function, then run the comparison using the previously described inputs: 
 ```python
 >> from vaccine_monitoring import vaccine_by_demographics
 >> vaccine_by_demographics("IncomePerCap")
 ```
 
-*Example Four:*   
+*Example Five:*   
 Create plot comparing two selected states based on selected demographic variable and Doses Administered. 
 ```python
 >> from vaccine_monitoring import comparisonplots
 >> comparisonplots("Alaska", "North Carolina", "Income")
 ```
 
-*Example Five:* 
+*Example Six:* 
 Interactive choropleth map to show number of doses administered by state. 
 ```python
 >> from vaccine_monitoring import comparisonplots
