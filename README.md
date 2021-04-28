@@ -169,3 +169,5 @@ After all tests have been written, run the below in the commandline and ensure a
 $ pytest test_vaccine_monitoring.py
 $ pytest class_object_tests.py
 ```
+
+Developers have also used 'pylint' to ensure clean and consistent coding. We encourage contributors to follow the 'pylint' consistency as well.  
