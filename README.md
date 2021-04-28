@@ -68,7 +68,7 @@ Other exploratory variables include:
 ```python
 >> simpleplots("demographic")
 ```
-A scatter plot of vaccine doses administered v. the demographic characteristic for each of the 50 states along with the regression line and corresponding R^2 statistic is saved into the working directory. SQL queries are utilized for efficient retrieval of the data. Demographic should be replaced with a demographic variable of interest: *TotalPop*, *Income*, *IncomePerCap*, *Hispanic*, *White*, *Native*, *Asian*, *Pacific*, *Men*, *Women*
+A scatter plot of vaccine doses administered v. the demographic characteristic for each of the 50 states and Puerto Rico along with the regression line and corresponding R^2 statistic is saved into the working directory. SQL queries are utilized for efficient retrieval of the data. Demographic should be replaced with a demographic variable of interest: *TotalPop*, *Income*, *IncomePerCap*, *Hispanic*, *White*, *Native*, *Asian*, *Pacific*, *Men*, *Women*
 
 ```python
 >> vaccine_by_demographics("variable")
@@ -90,7 +90,7 @@ This function prints a choropleth map of the united states, with color represent
 Consider the user wants to compare the Stage One Doses administered in North Carolina to the Stage Two Doses administered in South Carolina. The user would first "open" the data into a new dataframe, then run the comparison using the previously described Class objects:  
 
 ```python
->> from var_analysis import open_state
+>> from pycode.var_analysis import open_state
 >> mystate = open_state()
 >> mystate["North Carolina"].Stage_One_Doses > mystate["South Carolina"].Stage_Two_Doses
 ```
@@ -99,7 +99,7 @@ Consider the user wants to compare the Stage One Doses administered in North Car
 Similarly, we can consider the user wants to compare the percentage of the total North Carolina population that has recieved a first dose of the vaccine to the percentage of the total Minnesota population that has recieved a first dose of the vaccine. The user can alternatively place the class into python objects and print a comparison statement to discover which state has more percentage of dose one vaccine administered:  
 
 ```python
->> from var_analysis import open_state
+>> from pycode.var_analysis import open_state
 >> mystate = open_state()
 >> myMN = mystate["Minnesota"]
 >> myNC = mystate["North Carolina"]
@@ -111,32 +111,34 @@ Similarly, we can consider the user wants to compare the percentage of the total
 
 
 *Example Three:*   
-Consider the user wants to compare a demographic characteristic like the percentage of the state's population that is Hispanic and the number of doses that that state has administered. The user would first import the function, then run the comparison using the previously described inputs: 
+Consider the user wants to compare a demographic characteristic like the percentage of the state's population that is Hispanic and the number of doses that that state has administered. The plot is saved into the parent directory as, "DosesVsDEMOGRAPHIC_OF_INTEREST.png" where "DEMOGRAPHIC_OF_INTEREST" is the user input's demographic. In our example, the plot output will be, "DosesVsHispanic.png". The user would first import the function, then run the comparison using the previously described inputs:  
 ```python
->> from vaccine_monitoring import simpleplots
+>> from pycode.vaccine_monitoring import simpleplots
 >> simpleplots("Hispanic")
 ```
 
 *Example Four:*   
-Consider the user wants to compare states with a below median income per capita and states with a above median per capita and the amount of vaccine doses administered. The user would first import the function, then run the comparison using the previously described inputs: 
+Consider the user wants to compare states with a below median income per capita and states with an above median per capita and the amount of vaccine doses administered. The user would first import the function, then run the comparison using the previously described inputs. The output to this function is a plot titled, "boxplot_VARIABLE_OF_INTEREST.png" where "VARIABLE_OF_INTEREST" is the user input of the function. In this example, the variable of interest is 'IncomePerCap' and the png output is, "boxplot_IncomePerCap.png".    
 ```python
->> from vaccine_monitoring import vaccine_by_demographics
+>> from pycode.vaccine_monitoring import vaccine_by_demographics
 >> vaccine_by_demographics("IncomePerCap")
 ```
 
 *Example Five:*   
-Create plot comparing two selected states based on selected demographic variable and Doses Administered. 
+Create plot comparing two selected states based on selected demographic variable and Doses Administered. The output to this function is a plot titled, "comparisonplot_STATE1STATE2DEMOGRAPHIC.png" where "STATE1", "STATE2", and "DEMOGRPAHIC" are the user inputs of the function. In the below example, the output will be found in the parent directory and will be titled, "comparisonplot_AlaskaNorth CarolinaIncome.png".    
 ```python
->> from vaccine_monitoring import comparisonplots
+>> from pycode.vaccine_monitoring import comparisonplots
 >> comparisonplots("Alaska", "North Carolina", "Income")
 ```
 
 *Example Six:* 
-Interactive choropleth map to show number of doses administered by state. 
+Interactive choropleth map to show number of doses administered by state. This will open interactively in an internet browser such as google chrome.  
 ```python
->> from vaccine_monitoring import comparisonplots
+>> from pycode.vaccine_monitoring import interactiveplot
 >> interactiveplot()
 ```
+
+Below is a screenshot of the interactive map.  
 ![alt text](https://github.com/delashu/COVID_vax_monitoring/blob/main/Vaccinedosesadministeredbystate.png)
 
 
