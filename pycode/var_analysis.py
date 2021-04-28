@@ -21,7 +21,7 @@ class State():
     Create a class object called state using the __init__() function
     Assign various state level characteristic values to the State object property
     """
-    def __init__(self, state, Date, Lat, Long, Vaccine_Type, Doses_alloc, Doses_shipped,Doses_admin,Stage_One_Doses,Stage_Two_Doses,TotalPop,Men,Women,Hispanic,White,Native,Asian,Pacific,VotingAge,Income,IncomePerCap):
+    def __init__(self, state, Date, Lat, Long, Vaccine_Type, Doses_alloc, Doses_shipped, Doses_admin, Stage_One_Doses, Stage_Two_Doses, TotalPop, Men, Women, Hispanic, White, Native, Asian, Pacific, VotingAge, Income, IncomePerCap):
         self.state = state
         self.Date = Date
         self.Lat = Lat
@@ -47,27 +47,31 @@ class State():
     @property
     def percentage_stage_one(self):
         """
-        INPUT: 
-        BEHAVIOR:
+        INPUT: Utilize the class object to obtain both "Stage_One_Doses" and "TotalPop"
+        BEHAVIOR: ensure that 'self.Stage_One_Doses' and 'self.TotalPop' are both floats.  
+                Then calculate the percentage of the state's total population with a stage one vaccination.  
+                (# of Stage One Doses / Total Population)
+                store this into object, "pct_stg_one"
         OUTPUT: 
-        Utilizing the class object, we calculate the percentage of the population 
-        that has obtained a stage one dose (# of Stage One Doses / Total Population)
+            return 'pct_stg_one', which contains the value of interest. 
         """
         pct_stg_one = float(self.Stage_One_Doses)/float(self.TotalPop) 
         return pct_stg_one
     @property
     def percentage_stage_two(self):
         """
-        INPUT: 
-        BEHAVIOR:
+        INPUT: Utilize the class object to obtain both "Stage_Two_Doses" and "TotalPop"
+        BEHAVIOR: ensure that 'self.Stage_Two_Doses' and 'self.TotalPop' are both floats.  
+                Then calculate the percentage of the state's total population with a stage two vaccination.  
+                (# of Stage Two Doses / Total Population)
+                store this into object, "pct_stg_two"
         OUTPUT: 
-        Utilizing the class object, we calculate the percentage of the population 
-        that has obtained a stage two dose (# of Stage Two Doses / Total Population)
+            return 'pct_stg_two', which contains the value of interest. 
         """
         pct_stg_two = float(self.Stage_Two_Doses)/float(self.TotalPop) 
         return pct_stg_two
 
-def state_to_df(your_db="CovidVax.db"): 
+def state_to_df(your_db = "CovidVax.db"): 
     """
     INPUT: database name (default: "CovidVax.db")
     BEHAVIOR: connect to the databse, 
@@ -87,7 +91,7 @@ def state_to_df(your_db="CovidVax.db"):
     merged_df_dat = pd.read_sql_query(cmd, con)
     return merged_df_dat
 
-def open_state(your_db="CovidVax.db"): 
+def open_state(your_db = "CovidVax.db"): 
     """
     INPUT: database name (default: "CovidVax.db")
     BEHAVIOR: connect to the databse, 
@@ -108,7 +112,7 @@ def open_state(your_db="CovidVax.db"):
     WHERE statevax.Vaccine_Type = "All";
     """
     merged_df = pd.read_sql_query(cmd, con)
-    merged_df = merged_df.drop([51,52,53,54,55,56,57,58,59,60])
+    merged_df = merged_df.drop([51, 52, 53, 54, 55, 56, 57, 58, 59, 60])
     state_lists = merged_df.values.tolist()
     state_dict={}
     for us_state in state_lists:
@@ -134,24 +138,3 @@ def open_state(your_db="CovidVax.db"):
         Income = us_state[23], 
         IncomePerCap = us_state[24])
     return state_dict
-
-# if __name__ == "__main__":
-#     mystate = open_state()
-#     #print(len(mystate))
-#     #print(mystate["Nebraska"].Men)
-#     NC = mystate["North Carolina"]
-#     SC = mystate["South Carolina"]
-
-#     stg_one=SC.Stage_One_Doses
-#     totpop=SC.TotalPop
-#     my_div = stg_one/totpop
-#     print(my_div)
-#     print(SC.percentage_stage_one)
-#     print(my_div == SC.percentage_stage_one)
-
-
-#     print(NC.TotalPop)
-#     print(SC.TotalPop) 
-#     print(NC.percentage_stage_one)
-#     print(SC.percentage_stage_one)
-#     print(NC.percentage_stage_one > SC.percentage_stage_one)
