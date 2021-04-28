@@ -164,10 +164,10 @@ A separate directory in the github repository called, ["tests"](https://github.c
         assert show_patch.called
 ```
 
-After all tests have been written, run the below in the commandline and ensure all tests pass/clear.   
+After all tests have been written, run the below in the commandline and ensure all tests pass/clear.  
+Make sure that the tests are run in the parent directory.     
 ```console
-$ pytest -m test_vaccine_monitoring.py
-$ pytest -m class_object_tests.py
+$ python -m pytest tests
 ```
 
 Developers have also used 'pylint' to ensure clean and consistent coding. We encourage contributors to follow the 'pylint' consistency as well.  
