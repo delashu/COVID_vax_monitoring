@@ -161,11 +161,3 @@ def comparisonplots(state1, state2, demographic):
     ax.set_xticklabels((state1, state2))
     plt.show()
     plt.savefig('comparisonplot_'+ str(state1) + str(state2) + str(demographic) +'.png')
-
-if __name__ == '__main__':
-    simpleplots("Income")
-    vaccine_by_demographics("IncomePerCap")
-    comparisonplots("Alaska", "North Carolina", "Income")
-    mystate = open_state()
-    print(mystate["North Carolina"].Stage_One_Doses)
-    interactiveplot()
