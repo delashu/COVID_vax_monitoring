@@ -91,7 +91,7 @@ def simpleplots(demographic):
     plt.xlabel(demographic)
     plt.ylabel("Doses Administered")
     plt.title("Doses Administered v." + str(demographic) + "    R^2:" + str(reg.score(X,y,)))
-    plt.savefig('DosesVsDemographic.png')
+    plt.savefig('DosesVs' + str(demographic) + '.png')
 
 
 def vaccine_by_demographics(variable):
@@ -119,7 +119,7 @@ def vaccine_by_demographics(variable):
     plt.title("Does Administered by " + str(variable))
     plt.xlabel(variable)
     plt.ylabel("Doses Administered")
-    plt.savefig('boxplot.png')
+    plt.savefig('boxplot_' + str(variable) + '.png')
 
 
 def comparisonplots(state1, state2, demographic):
@@ -160,7 +160,7 @@ def comparisonplots(state1, state2, demographic):
     ax.set_xticks(ind + width / 2)
     ax.set_xticklabels((state1, state2))
     plt.show()
-    plt.savefig('comparisonplot.png')
+    plt.savefig('comparisonplot_'+ str(state1) + str(state2) + str(demographic) +'.png')
 
 if __name__ == '__main__':
     simpleplots("Income")
