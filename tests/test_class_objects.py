@@ -3,7 +3,7 @@ Testing file for the file, "var_analysis.py"
     This testing file will test all functions in the script, "var_analysis.py"
     contributors should add to these tests
 """
-import var_analysis
+from .. pycode import var_analysis
 import pytest
 
 def test_open_state():
@@ -12,8 +12,7 @@ def test_open_state():
     test to ensure that the number of Men in Nebraska is '943547.0'
     """
     state = var_analysis.open_state()
-    assert (
-        state["Nebraska"].Men) == 943547.0, "value is incorrect - test_open_state() does not pass"
+    assert state["Nebraska"].Men == 943547.0, "value is incorrect - test_open_state() does not pass"
 
 def test_state_to_df():
     """
@@ -21,7 +20,7 @@ def test_state_to_df():
     test to ensure that the State found in state.iloc[1][1] is "Alaska"
     """
     state = var_analysis.state_to_df()
-    assert (state.iloc[1][1]) == "Alaska", "value is incorrect - test_state_to_df() does not pass"
+    assert state.iloc[1][1] == "Alaska", "value is incorrect - test_state_to_df() does not pass"
 
 def test_open_state():
     """ 
@@ -29,7 +28,7 @@ def test_open_state():
     test to ensure that the correct len dictionary is output from "open_state()"
     """
     my_state = var_analysis.open_state()
-    assert (len(my_state) == 51, "value is incorrect - test_open_state() does not pass")
+    assert len(my_state) == 51, "value is incorrect - test_open_state() does not pass"
 
 def test_percentage_stage_two():
     """ 
@@ -38,7 +37,7 @@ def test_percentage_stage_two():
     """
     my_state = var_analysis.open_state()
     #create a SC object 
-    SC = mystate["South Carolina"]
+    SC = my_state["South Carolina"]
     #output the number of Stage_Two_Doses
     stg_two=SC.Stage_Two_Doses
     #output the total population
@@ -46,7 +45,7 @@ def test_percentage_stage_two():
     #manually calculate the percentage stage two doses
     my_div = stg_two/totpop
     #assert that the manual division is the same as the class object
-    assert(my_div == SC.percentage_stage_two, "value is incorrect - test_percentage_stage_two() does not pass")
+    assert my_div == SC.percentage_stage_two, "value is incorrect - test_percentage_stage_two() does not pass"
 
 def test_percentage_stage_one():
     """ 
@@ -55,7 +54,7 @@ def test_percentage_stage_one():
     """
     my_state = var_analysis.open_state()
     #create a Maryland object 
-    MD = mystate["Maryland"]
+    MD = my_state["Maryland"]
     #output the number of Stage_One_Doses
     stg_one = MD.Stage_One_Doses
     #output the total population
@@ -63,4 +62,4 @@ def test_percentage_stage_one():
     #manually calculate the percentage stage one doses
     my_div = stg_one/totpop
     #assert that the manual division is the same as the class object
-    assert(my_div == MD.percentage_stage_one, "value is incorrect - test_percentage_stage_one() does not pass")
+    assert my_div == MD.percentage_stage_one, "value is incorrect - test_percentage_stage_one() does not pass"
