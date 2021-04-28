@@ -11,8 +11,8 @@ import datetime
 import sqlite3
 import pandas as pd
 import os
-import vaccine_data_retreival
-import demo_data_retrieval
+import pycode.vaccine_data_retreival
+import pycode.demo_data_retrieval
 
 con = sqlite3.connect('CovidVax.db')
 cur = con.cursor()
@@ -47,26 +47,22 @@ class State():
     @property
     def percentage_stage_one(self):
         """
-        INPUT: this function takes in the "Stage_One_Doses" and "TotalPop" from self as 
-                defined in the class object above. 
-                ensure to add a decorator "@property"
-        BEHAVIOR: We ensure that both "Stage_One_Doses" and "TotalPop" are floats
-                    We divide "Stage_One_Doses" by "TotalPop" to obtain 
-                    the percentage of the state that has recieved a stage one dose. 
-        OUTPUT: return a object "pct_stg_one" that contains the percentage of the state that has recieved a stage one dose. 
+        INPUT: 
+        BEHAVIOR:
+        OUTPUT: 
+        Utilizing the class object, we calculate the percentage of the population 
+        that has obtained a stage one dose (# of Stage One Doses / Total Population)
         """
         pct_stg_one = float(self.Stage_One_Doses)/float(self.TotalPop) 
         return pct_stg_one
     @property
     def percentage_stage_two(self):
         """
-        INPUT: this function takes in the "Stage_Two_Doses" and "TotalPop" from self as 
-                defined in the class object above. 
-                ensure to add a decorator "@property"
-        BEHAVIOR: We ensure that both "Stage_Two_Doses" and "TotalPop" are floats
-                    We divide "Stage_Two_Doses" by "TotalPop" to obtain 
-                    the percentage of the state that has recieved a stage two dose. 
-        OUTPUT: return a object "pct_stg_two" that contains the percentage of the state that has recieved a stage two dose. 
+        INPUT: 
+        BEHAVIOR:
+        OUTPUT: 
+        Utilizing the class object, we calculate the percentage of the population 
+        that has obtained a stage two dose (# of Stage Two Doses / Total Population)
         """
         pct_stg_two = float(self.Stage_Two_Doses)/float(self.TotalPop) 
         return pct_stg_two
@@ -91,7 +87,7 @@ def state_to_df(your_db="CovidVax.db"):
     merged_df_dat = pd.read_sql_query(cmd, con)
     return merged_df_dat
 
-def open_state(your_db = "CovidVax.db"): 
+def open_state(your_db="CovidVax.db"): 
     """
     INPUT: database name (default: "CovidVax.db")
     BEHAVIOR: connect to the databse, 
@@ -112,7 +108,7 @@ def open_state(your_db = "CovidVax.db"):
     WHERE statevax.Vaccine_Type = "All";
     """
     merged_df = pd.read_sql_query(cmd, con)
-    merged_df = merged_df.drop([51, 52, 53, 54, 55, 56, 57, 58, 59, 60])
+    merged_df = merged_df.drop([51,52,53,54,55,56,57,58,59,60])
     state_lists = merged_df.values.tolist()
     state_dict={}
     for us_state in state_lists:
@@ -138,3 +134,24 @@ def open_state(your_db = "CovidVax.db"):
         Income = us_state[23], 
         IncomePerCap = us_state[24])
     return state_dict
+
+# if __name__ == "__main__":
+#     mystate = open_state()
+#     #print(len(mystate))
+#     #print(mystate["Nebraska"].Men)
+#     NC = mystate["North Carolina"]
+#     SC = mystate["South Carolina"]
+
+#     stg_one=SC.Stage_One_Doses
+#     totpop=SC.TotalPop
+#     my_div = stg_one/totpop
+#     print(my_div)
+#     print(SC.percentage_stage_one)
+#     print(my_div == SC.percentage_stage_one)
+
+
+#     print(NC.TotalPop)
+#     print(SC.TotalPop) 
+#     print(NC.percentage_stage_one)
+#     print(SC.percentage_stage_one)
+#     print(NC.percentage_stage_one > SC.percentage_stage_one)

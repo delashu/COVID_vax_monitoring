@@ -5,7 +5,6 @@ Four separate figures are created with additional analyses performed on the plot
 
 Figures created include: interactive chloropeth map, scatter plot, boxplot, and bar plot
 Analyses performed include: linear regression, R^2, and one-way ANOVA 
-
 """
 
 from bioinfokit.analys import stat
@@ -21,7 +20,7 @@ import plotly.graph_objects as go
 import seaborn as sns
 from sklearn.linear_model import LinearRegression
 import sqlite3
-from var_analysis import state_to_df, open_state
+from pycode.var_analysis import state_to_df, open_state
 
 # read and format data for plots
 data = state_to_df()
