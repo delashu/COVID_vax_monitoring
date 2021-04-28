@@ -154,16 +154,23 @@ The general flow of data to analysis goes as follows:
 
 
 ### Tests  
-A separate directory in the github repository called, ["tests"](https://github.com/delashu/COVID_vax_monitoring/tree/main/tests) houses python test files for the various python files found in the repository. We encourage contributors to add to these tests and create their own test files. Below we highlight tests found in our repository. The first is found in ["test_vaccine_monitoring.py"](https://github.com/delashu/COVID_vax_monitoring/blob/main/tests/test_vaccine_monitoring.py)   
+A separate directory in the github repository called, ["tests"](https://github.com/delashu/COVID_vax_monitoring/tree/main/tests) houses python test files for the various python files found in the repository. We encourage contributors to add to these tests and create their own test files. Below we highlight one test found in our repository. The first is found in ["test_vaccine_monitoring.py"](https://github.com/delashu/COVID_vax_monitoring/blob/main/tests/test_vaccine_monitoring.py)   
 
 ```python
->> from plots import simpleplots, vaccine_by_demographics, comparisonplots
+>> import matplotlib.pyplot as plt
+>> from .. pycode import vaccine_monitoring
 >> from unittest.mock import patch
+>> import pytest
+
 >> def test_simpleplots():
-    """test simpleplots."""
-    with patch("plots.plt.savefig") as show_patch:
-        simpleplots("IncomePerCap")
-        assert show_patch.called
+      """test that single data point appears on scatterplot for simpleplots."""
+      demographic = "Income"
+      vaccine_monitoring.simpleplots(demographic)
+      f, ax = plt.subplots()
+      scat = ax.scatter([0.41490221], [-2.17831414])
+      set1 = scat.get_offsets()
+      set2 = [[0.41490221, -2.17831414]]
+      assert (set1 == set2).all() == True
 ```
 
 After all tests have been written, run the below in the commandline and ensure all tests pass/clear.  
