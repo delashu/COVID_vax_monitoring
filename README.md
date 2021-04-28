@@ -166,8 +166,8 @@ A separate directory in the github repository called, ["tests"](https://github.c
 
 After all tests have been written, run the below in the commandline and ensure all tests pass/clear.   
 ```console
-$ pytest test_vaccine_monitoring.py
-$ pytest class_object_tests.py
+$ pytest -m test_vaccine_monitoring.py
+$ pytest -m class_object_tests.py
 ```
 
 Developers have also used 'pylint' to ensure clean and consistent coding. We encourage contributors to follow the 'pylint' consistency as well.  
