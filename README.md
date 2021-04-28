@@ -3,7 +3,10 @@
 **Team Member Names**: Noel Allen, Shusaku Asai, Saahithi Rao   
 **General Software Architecture**: Python based programs to scrape, visualize, and monitor COVID-19 vaccination rates
 
-  
+### Directory Map:    
+1. ["**pycode**"](https://github.com/delashu/COVID_vax_monitoring/tree/main/pycode): includes all python files that the end-user should download and run. Additional data files necessary for analysis are also present.  
+2. ["**tests**"](https://github.com/delashu/COVID_vax_monitoring/tree/main/tests): includes all python files for contributors for testing purposes.  
+
 ## End User Instructions:  
 Workflow will follow the basic steps:  
  1. Download requried files found in github repository  
@@ -11,7 +14,7 @@ Workflow will follow the basic steps:
  3. Perform desired analysis using provided functions  
 
 ### Installation and set-up  
-1. Download the files, ["*vaccine_data_retrival.py*"](https://github.com/delashu/COVID_vax_monitoring/blob/main/vaccine_data_retreival.py), ["acs2017_county_data.csv"](https://github.com/delashu/COVID_vax_monitoring/blob/main/acs2017_county_data.csv),["*demo_data_retrieval.py*"](https://github.com/delashu/COVID_vax_monitoring/blob/main/demo_data_retrieval.py), ["*vaccine_monitoring.py*"](https://github.com/delashu/COVID_vax_monitoring/blob/main/vaccine_monitoring.py), and ["*var_analysis.py*"](https://github.com/delashu/COVID_vax_monitoring/blob/main/var_analysis.py), found in the github repository. Ensure that all of these files are placed in the same directory/folder.    
+1. Download all of the following files via the folder, ["**pycode**"](https://github.com/delashu/COVID_vax_monitoring/tree/main/pycode): ["*vaccine_data_retrival.py*"](https://github.com/delashu/COVID_vax_monitoring/blob/main/vaccine_data_retreival.py), ["acs2017_county_data.csv"](https://github.com/delashu/COVID_vax_monitoring/blob/main/acs2017_county_data.csv),["*demo_data_retrieval.py*"](https://github.com/delashu/COVID_vax_monitoring/blob/main/demo_data_retrieval.py), ["*vaccine_monitoring.py*"](https://github.com/delashu/COVID_vax_monitoring/blob/main/vaccine_monitoring.py), and ["*var_analysis.py*"](https://github.com/delashu/COVID_vax_monitoring/blob/main/var_analysis.py), found in the github repository. Ensure that all of these files are placed in the same directory/folder.    
 2. Open a new python script where you will perform your analyses  
 3. Import functions into your environment based on desired analysis/capabilities.  
 4. Create an object to house the analytic dataset (a pandas dataframe) where each row is a state in which demographic and vaccine data is present. In the below example, we call this dataset, "mystate"
@@ -142,7 +145,7 @@ Below is a screenshot of the interactive map.
 ![alt text](https://github.com/delashu/COVID_vax_monitoring/blob/main/Vaccinedosesadministeredbystate.png)
 
 
-## Contributor Instructions: 
+## Contributor Instructions:  
 ### Contributor Workflow Overview:  
 The general flow of data to analysis goes as follows:  
 1. Run ["*vaccine_data_retrival.py*"](https://github.com/delashu/COVID_vax_monitoring/blob/main/vaccine_data_retreival.py). This file pulls the most recent state-level vaccine data. We download the data and place it into a SQLite3 table.  
