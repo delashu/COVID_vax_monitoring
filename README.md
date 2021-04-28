@@ -101,10 +101,11 @@ Similarly, we can consider the user wants to compare the percentage of the total
 ```python
 >> from var_analysis import open_state
 >> mystate = open_state()
->> my_MN_stgone = mystate["Minnesota"].percentage_stage_one
->> my_NC_stgone = mystate["North Carolina"].percentage_stage_one
+>> myMN = mystate["Minnesota"]
+>> myNC = mystate["North Carolina"]
+>> my_MN_stgone = myMN.percentage_stage_one
+>> my_NC_stgone = myNC.percentage_stage_one
 >> print(my_MN_stgone > my_NC_stgone)
-
 ```
 
 
