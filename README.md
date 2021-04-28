@@ -11,7 +11,7 @@ Workflow will follow the basic steps:
  3. Perform desired analysis using provided functions  
 
 ### Installation and set-up  
-1. Download the files, ["*vaccine_data_retrival.py*"](https://github.com/delashu/COVID_vax_monitoring/blob/main/vaccine_data_retreival.py), ["acs2017_county_data.csv"](https://github.com/delashu/COVID_vax_monitoring/blob/main/acs2017_county_data.csv),["*demo_data_retrieval.py*"](https://github.com/delashu/COVID_vax_monitoring/blob/main/demo_data_retrieval.py), ["*vaccine_monitoring.py*"](https://github.com/delashu/COVID_vax_monitoring/blob/main/vaccine_monitoring.py), and ["*var_analysis.py*"](https://github.com/delashu/COVID_vax_monitoring/blob/main/var_analysis.py), found in the github repository   
+1. Download the files, ["*vaccine_data_retrival.py*"](https://github.com/delashu/COVID_vax_monitoring/blob/main/vaccine_data_retreival.py), ["acs2017_county_data.csv"](https://github.com/delashu/COVID_vax_monitoring/blob/main/acs2017_county_data.csv),["*demo_data_retrieval.py*"](https://github.com/delashu/COVID_vax_monitoring/blob/main/demo_data_retrieval.py), ["*vaccine_monitoring.py*"](https://github.com/delashu/COVID_vax_monitoring/blob/main/vaccine_monitoring.py), and ["*var_analysis.py*"](https://github.com/delashu/COVID_vax_monitoring/blob/main/var_analysis.py), found in the github repository. Ensure that all of these files are placed in the same directory/folder.    
 2. Open a new python script where you will perform your analyses  
 3. Import functions into your environment based on desired analysis/capabilities.  
 4. Create an object to house the analytic dataset (a pandas dataframe) where each row is a state in which demographic and vaccine data is present. In the below example, we call this dataset, "mystate"
@@ -22,11 +22,12 @@ Workflow will follow the basic steps:
 5. Run desired analysis. For example, if you wish to output the number of Stage One Vaccine doses for the state of North Carolina, run the following line:   
 ```python
 >> mystate = open_state()
->> mystate["North Carolina"].Stage_One_Doses
+>> NC = mystate["North Carolina"]
+>> print(NC.Stage_One_Doses)
 ```
 
 
-**Note that the full description and examples of functions and capabilities are found in the rest of this README.**  
+**Note that a full description and examples of functions and capabilities are found in the rest of this README.**  
 
 ## API description  
 Below is a guide for each function found in this github repository:  
