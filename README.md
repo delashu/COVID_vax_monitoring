@@ -83,7 +83,7 @@ To perform pairwise comparisons of states, a bar plot with logarithmic scales of
 ```python
 >> interactiveplot()
 ```
-Description here
+This function prints a choropleth map of the united states, with color representing the number of vaccine doses administered by each state. 
 
 ### Example Use Cases   
 *Example One:*  
